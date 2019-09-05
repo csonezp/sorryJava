@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -65,6 +66,11 @@ public class GifService {
         }
         root.put("mx", mx);
         Template temp = cfg.getTemplate("template.ftl");
+        File file = new File(path.toString());
+        boolean created= false;
+        if(!file.exists()){
+            created = file.createNewFile();
+        }
         try (FileWriter writer = new FileWriter(path.toFile())) {
             temp.process(root, writer);
         } catch (Exception e) {
